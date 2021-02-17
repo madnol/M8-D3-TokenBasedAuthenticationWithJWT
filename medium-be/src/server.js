@@ -7,6 +7,7 @@ const cors = require("cors");
 const articlesRouter = require("./services/articles");
 const reviewsRouter = require("./services/reviews");
 const authorRouter = require("./services/authors");
+const userRouter = require("./services/users");
 
 const {
   notFoundErrorHandler,
@@ -38,6 +39,7 @@ server.use(express.json());
 server.use("/articles", articlesRouter);
 server.use("/reviews", reviewsRouter);
 server.use("/authors", authorRouter);
+server.use("/users", userRouter);
 
 //ERROR HANDLERS
 server.use(notFoundErrorHandler);
