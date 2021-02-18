@@ -39,7 +39,7 @@ server.use(express.json());
 server.use("/articles", articlesRouter);
 server.use("/reviews", reviewsRouter);
 server.use("/authors", authorRouter);
-server.use("/users", userRouter);
+server.use("/user", userRouter);
 
 //ERROR HANDLERS
 server.use(notFoundErrorHandler);
@@ -54,6 +54,7 @@ mongoose
   .connect(process.env.MONGO_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   })
   .then(
     server.listen(port, () =>

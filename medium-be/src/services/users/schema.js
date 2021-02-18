@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const UserSchema = new Schema(
   {
@@ -37,16 +38,14 @@ UserSchema.methods.toJSON = function () {
   return userObject;
 };
 
-UserSchema.statics.findByCredentials = async (email, password) => {
-  const user = await this.findOne({ email });
+UserSchema.statics.findByCredentials = async function (username, password) {
+  const user = await this.findOne({ username });
 
   if (user) {
-    const isMatch = await bcrypt.compare(plainPW, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) return user;
     else return null;
-  } else {
-    return null;
-  }
+  } else return null;
 };
 
 UserSchema.pre("save", async function (next) {

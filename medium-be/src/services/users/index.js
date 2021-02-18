@@ -15,11 +15,29 @@ usersRouter.post("/register", async (req, res, next) => {
     console.log("successfully registered!");
     res.status(201).send(_id);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
 
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.post("/login", async (req, res, next) => {
+  try {
+    //CHECK CREDENTIALS
+    const { username, password } = req.body;
+    const user = await UserModel.findByCredentials(username, password);
+    //GENERATE TOKEN
+    const tokens = await authenticate(user);
+    //SEND BACK TOKEN
+
+    await res.status(200).send({ tokens });
+    console.log("good boy ;)");
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+usersRouter.get("/", authorize, async (req, res, next) => {
   try {
     const users = await UserModel.find();
     res.send(users);
